@@ -10,7 +10,7 @@
   --accent-hue: 345;
   --brand-primary-hue: 290;
   --brand-secondary-hue: 334;
-  --btn-hover-hue: 250;
+  --btn-hover-hue: 262;
   --error-hue: 340;
 
   --background: hsl(var(--hue), 10%, 98%); /* body */
@@ -98,7 +98,7 @@
   --btn-accent-foreground: hsl(var(--hue), 10%, 100%);
   --btn-accent-background: hsl(var(--brand-primary-hue), 100%, 35%);
   --btn-accent-foreground-hover: hsl(var(--hue), 10%, 100%);
-  --btn-accent-background-hover: hsl(var(--btn-hover-hue), 75%, 35%);
+  --btn-accent-background-hover: hsl(var(--btn-hover-hue), 65%, 40%);
 
   --input: hsl(var(--hue), 10%, 15%);
   --input-border: hsl(var(--hue), 10%, 20%);
@@ -263,9 +263,9 @@
     @apply relative flex h-full;
   }
 
-  main {
+  /* main {
     @apply flex flex-1;
-  }
+  } */
 
   .sidebar {
     width: 0;
@@ -292,10 +292,6 @@
   input:-webkit-autofill {
     -webkit-box-shadow: 0 0 0 100px var(--input-autofill) inset !important;
     -webkit-text-fill-color: var(--foreground) !important;
-  }
-
-  input::placeholder {
-    font-weight: 400;
   }
 
   /* Animations */

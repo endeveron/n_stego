@@ -1,38 +1,38 @@
 'use client';
 
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+
 import { Button } from '@/core/components/ui/Button';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
+  FormTextarea,
 } from '@/core/components/ui/Form';
-import { Textarea } from '@/core/components/ui/Textarea';
+import Loading from '@/core/components/ui/Loading';
 import { embedSecretAction } from '@/core/features/steganography/actions';
 import ImageUploader from '@/core/features/steganography/components/ImageUploader';
 import {
   FORM_TOGGLE_TIMEOUT,
   OUTPUT_IMAGE_FILENAME,
 } from '@/core/features/steganography/constants';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import type { EmbedSecretFormData } from '../schemas';
-import { embedSecretClientSchema } from '../schemas';
+import {
+  embedSecretSchema,
+  type EmbedSecretData,
+} from '@/core/features/steganography/schemas';
 import { cn } from '@/core/utils';
 
 export default function SecretEmbedder() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isEmbed, setIsEmbed] = useState(false);
 
-  const form = useForm<EmbedSecretFormData>({
-    resolver: zodResolver(embedSecretClientSchema),
-    defaultValues: {
-      imageFile: undefined,
-      secretText: 'Hello!',
-    },
+  const form = useForm<EmbedSecretData>({
+    resolver: zodResolver(embedSecretSchema),
   });
 
   // const selectedFile = form.watch('imageFile');
@@ -63,14 +63,7 @@ export default function SecretEmbedder() {
     setIsEmbed(true);
   };
 
-  const onSubmit = async (data: EmbedSecretFormData) => {
-    // console.log('Form data:', {
-    //   secretText: data.secretText,
-    //   fileName: data.imageFile.name,
-    //   fileSize: data.imageFile.size,
-    //   fileType: data.imageFile.type,
-    // });
-
+  const onSubmit = async (data: EmbedSecretData) => {
     setIsProcessing(true);
 
     try {
@@ -88,11 +81,11 @@ export default function SecretEmbedder() {
         }
       } else {
         console.error('Server error:', res.error);
-        // TODO: Handle error (e.g., show error toast)
+        toast('Server error');
       }
     } catch (error) {
       console.error('Client error:', error);
-      // TODO: Handle client-side error
+      toast('Oops! Something went wrong');
     } finally {
       setIsProcessing(false);
     }
@@ -112,7 +105,7 @@ export default function SecretEmbedder() {
   }, [isEmbed]);
 
   return (
-    <div className="w-full max-w-md mx-auto pt-0 px-6 pb-8 border-border/50 border-2 rounded-2xl trans-a">
+    <div className="w-full max-w-md pt-0 px-6 pb-8 border-border/50 border-2 rounded-2xl trans-a">
       <div className="flex-center -translate-y-6">
         <h1 className="w-fit text-2xl text-center text-title font-bold  bg-background px-4 trans-c">
           Embed Secret in Image
@@ -121,32 +114,39 @@ export default function SecretEmbedder() {
 
       {isEmbed ? (
         <div className="w-full flex-center flex-col gap-4 p-6 rounded-lg bg-input/40 cursor-default trans-c">
-          <div className="text-2xl font-bold dark:text-teal-400">
-            Completed!
-          </div>
+          <div className="text-2xl font-bold dark:text-teal-400">Success!</div>
           <div className="text-muted text-sm text-center">
             Check your downloads folder. <br />
             The image now contains an encrypted embed.
           </div>
         </div>
       ) : (
-        <div
-          className={cn(
-            'trans-o',
-            isProcessing && 'opacity-20 pointer-events-none'
-          )}
-        >
+        <div className="relative">
+          <div
+            className={cn(
+              'absolute z-10 opacity-0 inset-0 pointer-events-none flex-center',
+              isProcessing && 'opacity-100'
+            )}
+          >
+            <Loading />
+          </div>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className={cn(
+                'min-h-24 space-y-6 trans-o',
+                isProcessing && 'opacity-5 pointer-events-none'
+              )}
+            >
               {/* Text Input */}
               <FormField
                 control={form.control}
                 name="secretText"
                 render={({ field }) => (
                   <FormItem>
-                    {/* <FormLabel>Text</FormLabel> */}
                     <FormControl>
-                      <Textarea
+                      <FormTextarea
+                        className="min-h-24 text-lg font-semibold"
                         placeholder="Enter your secret text here..."
                         rows={8}
                         {...field}
@@ -163,7 +163,6 @@ export default function SecretEmbedder() {
                 name="imageFile"
                 render={({ field }) => (
                   <FormItem>
-                    {/* <FormLabel>Image File</FormLabel> */}
                     <ImageUploader onChange={field.onChange} />
                   </FormItem>
                 )}

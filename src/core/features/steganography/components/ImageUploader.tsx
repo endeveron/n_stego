@@ -11,7 +11,7 @@ import Image from 'next/image';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 type ImageUploaderProps = {
-  onChange: (fileList: FileList) => void;
+  onChange: (file: File) => void;
 };
 
 export default function ImageUploader({ onChange }: ImageUploaderProps) {
@@ -24,8 +24,9 @@ export default function ImageUploader({ onChange }: ImageUploaderProps) {
       e.preventDefault();
       const files = e.dataTransfer.files;
       if (files && files.length > 0) {
-        onChange(files);
-        setPreviewFile(files[0]);
+        const imgFile = files[0];
+        onChange(imgFile);
+        setPreviewFile(imgFile);
       }
     },
     [onChange]
@@ -34,8 +35,9 @@ export default function ImageUploader({ onChange }: ImageUploaderProps) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
-      onChange(files);
-      setPreviewFile(files[0]);
+      const imgFile = files[0];
+      onChange(imgFile);
+      setPreviewFile(imgFile);
     }
   };
 
@@ -50,14 +52,14 @@ export default function ImageUploader({ onChange }: ImageUploaderProps) {
     <>
       <FormControl>
         <div
-          className="relative border-2 border-dashed border-muted/40 p-4 rounded-md  text-center cursor-pointer hover:bg-muted/10 transition-colors"
+          className="relative min-h-24 border-2 border-dashed border-muted/40 p-4 rounded-md text-center cursor-pointer hover:bg-muted/10 transition-colors"
           onClick={() => inputRef.current?.click()}
           onDragOver={(e) => e.preventDefault()}
           onDrop={handleDrop}
         >
           {!previewFile && (
-            <div className="text-sm text-muted">
-              <p>
+            <div className="h-full flex-center">
+              <p className="text-sm text-muted">
                 Pick or drag an image
                 <br />
                 JPEG or PNG
