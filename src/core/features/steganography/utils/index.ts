@@ -7,6 +7,7 @@ import {
   SupportedImageFormat,
 } from '../types';
 import { zipPayloadSchema } from '../schemas';
+import { ENCRYPTED_TEXT_FILENAME } from '@/core/features/steganography/constants';
 
 /**
  * Convert File to Uint8Array
@@ -32,7 +33,7 @@ export function uint8ArrayToBase64(uint8Array: Uint8Array): string {
 }
 
 /**
- * Find the end of JPEG data (EOI marker: 0xFF 0xD9)
+ * Helper to find the end of JPEG data (EOI marker: 0xFF 0xD9)
  * For PNG, we'll append after the IEND chunk
  */
 function findImageEndPosition(
@@ -68,23 +69,13 @@ function findImageEndPosition(
 }
 
 /**
- * Create a ZIP archive containing the encrypted secret
+ * Helper to create a ZIP archive containing the encrypted secret
  */
-async function createSecretZip(secretText: string): Promise<Uint8Array> {
+async function createSecretZip(encryptedText: string): Promise<Uint8Array> {
   const zip = new JSZip();
 
-  // Encrypt the secret
-  const encryptedSecret = encryptString(secretText);
-
-  // Create payload with metadata
-  const payload: ZipPayload = {
-    encryptedSecret,
-    timestamp: Date.now(),
-    version: ZIP_SIGNATURE,
-  };
-
   // Add to ZIP
-  zip.file('secret.json', JSON.stringify(payload));
+  zip.file(ENCRYPTED_TEXT_FILENAME, encryptedText);
 
   // Generate ZIP as Uint8Array
   const zipData = await zip.generateAsync({
@@ -97,7 +88,7 @@ async function createSecretZip(secretText: string): Promise<Uint8Array> {
 }
 
 /**
- * Extract and decrypt secret from ZIP data
+ * Helper to extract and decrypt secret from ZIP data
  */
 async function extractSecretFromZip(zipData: Uint8Array): Promise<string> {
   try {
@@ -141,16 +132,19 @@ async function extractSecretFromZip(zipData: Uint8Array): Promise<string> {
 /**
  * Embed encrypted secret into image by appending ZIP data
  */
-export async function embedSecretInImage(
-  imageFile: File,
-  secretText: string
-): Promise<SteganographyResult> {
+export async function embedSecretInImage({
+  imageFile,
+  encryptedText,
+}: {
+  imageFile: File;
+  encryptedText: string;
+}): Promise<SteganographyResult> {
   try {
     // Convert image to bytes
     const imageBytes = await fileToUint8Array(imageFile);
 
-    // Create ZIP with encrypted secret
-    const secretZip = await createSecretZip(secretText);
+    // Create ZIP with encrypted text
+    const zip = await createSecretZip(encryptedText);
 
     // Find where to append data (after image end markers)
     const imageEndPos = findImageEndPosition(
@@ -159,13 +153,13 @@ export async function embedSecretInImage(
     );
 
     // Create new array with image + ZIP data
-    const modifiedImage = new Uint8Array(imageEndPos + secretZip.length);
+    const modifiedImage = new Uint8Array(imageEndPos + zip.length);
 
     // Copy original image data up to end position
     modifiedImage.set(imageBytes.subarray(0, imageEndPos), 0);
 
     // Append ZIP data
-    modifiedImage.set(secretZip, imageEndPos);
+    modifiedImage.set(zip, imageEndPos);
 
     return {
       success: true,

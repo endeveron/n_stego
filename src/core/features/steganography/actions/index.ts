@@ -1,57 +1,73 @@
 'use server';
 
 import { embedSecretServerSchema } from '@/core/features/steganography/schemas';
+import { EmbedSecretResult } from '@/core/features/steganography/types';
+import { embedSecretInImage } from '@/core/features/steganography/utils';
+import { encryptString } from '@/core/lib/crypto';
 import { ServerActionResult } from '@/core/types/common';
 import { handleActionError } from '@/core/utils/error';
 
-interface EmbedSecretResult {
-  originalFileName: string;
-  secretLength: number;
-  fileSize: number;
-}
-
 export async function embedSecretAction(
   formData: FormData
-): Promise<ServerActionResult<EmbedSecretResult>> {
+): Promise<ServerActionResult<Uint8Array<ArrayBufferLike> | undefined>> {
+  const errMsg = 'Unable to embed provided data.';
   try {
     // Extract data from FormData
     const secretText = formData.get('secretText') as string;
     const imageFile = formData.get('imageFile') as File;
 
-    console.log('Server received data:', {
-      secretText,
-      fileName: imageFile?.name,
-      fileSize: imageFile?.size,
-      fileType: imageFile?.type,
-      isFile: imageFile instanceof File,
-    });
+    if (!secretText || !imageFile) {
+      return handleActionError(`${errMsg} Missing input data.`);
+    }
+
+    // console.log('Server received data:', {
+    //   secretText,
+    //   fileName: imageFile?.name,
+    //   fileSize: imageFile?.size,
+    //   fileType: imageFile?.type,
+    //   isFile: imageFile instanceof File,
+    // });
 
     // Validate using your server schema
     const validatedData = embedSecretServerSchema.parse({
-      secretText,
       imageFile,
+      secretText,
     });
 
-    console.log('Data validation passed:', {
-      secretText: validatedData.secretText,
-      imageFileName: validatedData.imageFile.name,
-      imageFileSize: validatedData.imageFile.size,
-      imageFileType: validatedData.imageFile.type,
-    });
+    if (!validatedData) {
+      return handleActionError(`${errMsg} Invalid input data.`);
+    }
 
-    // TODO: Next steps will be implemented here
-    // 1. Encrypt the secret text
-    // 2. Create ZIP archive with encrypted data
-    // 3. Concatenate ZIP to image
-    // 4. Return the modified image
+    // console.log('Data validation passed:', {
+    //   secretText: validatedData.secretText,
+    //   imageFileName: validatedData.imageFile.name,
+    //   imageFileSize: validatedData.imageFile.size,
+    //   imageFileType: validatedData.imageFile.type,
+    // });
+
+    // Encrypt the secret text
+    const encryptedText = encryptString(validatedData.secretText);
+    // console.log('[Debug] Secret encrypted successfully:', {
+    //   originalLength: validatedData.secretText.length,
+    //   encryptedLength: encryptedSecret.length,
+    //   encryptedPreview: encryptedSecret.substring(0, 20) + '...',
+    // });
+
+    // Embed encrypted secret into image
+    const { success, data, error } = await embedSecretInImage({
+      imageFile,
+      encryptedText,
+    });
+    if (error) {
+      return handleActionError(`${errMsg} Could not create archive. ${error}`);
+    }
+    if (!success) {
+      return handleActionError(`${errMsg} Could not create archive.`);
+    }
 
     return {
       success: true,
-      data: {
-        originalFileName: validatedData.imageFile.name,
-        secretLength: validatedData.secretText.length,
-        fileSize: validatedData.imageFile.size,
-      },
+      data, // The modified image
     };
   } catch (error) {
     console.error('Error in embedSecretAction:', error);

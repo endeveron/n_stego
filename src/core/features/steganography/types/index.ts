@@ -3,12 +3,19 @@ export interface EmbedSecretRequest {
   secretText: string;
 }
 
-export interface EmbedSecretResponse {
-  success: boolean;
-  modifiedImageData?: string; // Base64 encoded image with embedded secret
-  originalFileName?: string;
-  error?: string;
+export interface EmbedSecretResult {
+  originalFileName: string;
+  secretLength: number;
+  encryptedLength: number;
+  fileSize: number;
 }
+
+// export interface EmbedSecretResponse {
+//   success: boolean;
+//   modifiedImageData?: string; // Base64 encoded image with embedded secret
+//   originalFileName?: string;
+//   error?: string;
+// }
 
 export interface ExtractSecretRequest {
   imageFile: File;

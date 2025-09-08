@@ -23,7 +23,7 @@ export default async function MainPage() {
   // }
 
   return (
-    <main className="">
+    <main className="flex-center flex-col">
       <SecretEmbedder />
     </main>
   );

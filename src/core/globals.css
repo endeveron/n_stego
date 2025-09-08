@@ -10,7 +10,7 @@
   --accent-hue: 345;
   --brand-primary-hue: 290;
   --brand-secondary-hue: 334;
-  --btn-hover-hue: 334;
+  --btn-hover-hue: 250;
   --error-hue: 340;
 
   --background: hsl(var(--hue), 10%, 98%); /* body */
@@ -98,7 +98,7 @@
   --btn-accent-foreground: hsl(var(--hue), 10%, 100%);
   --btn-accent-background: hsl(var(--brand-primary-hue), 100%, 35%);
   --btn-accent-foreground-hover: hsl(var(--hue), 10%, 100%);
-  --btn-accent-background-hover: hsl(var(--btn-hover-hue), 65%, 45%);
+  --btn-accent-background-hover: hsl(var(--btn-hover-hue), 75%, 35%);
 
   --input: hsl(var(--hue), 10%, 15%);
   --input-border: hsl(var(--hue), 10%, 20%);
@@ -111,10 +111,10 @@
   --popover-foreground: hsl(var(--hue), 10%, 85%);
   --popover-focus: hsl(var(--hue), 10%, 15%);
 
-  --error: hsl(var(--error-hue), 100%, 50%);
+  --error: hsl(var(--error-hue), 100%, 60%);
 
   --topbar: hsl(var(--hue), 10%, 20%);
-  --title: hsl(var(--brand-primary-hue), 100%, 50%);
+  --title: hsl(var(--brand-primary-hue), 100%, 60%);
   --area: hsl(var(--hue), 10%, 5%);
   --muted: hsl(var(--hue), 10%, 55%);
   --border: hsl(var(--hue), 10%, 20%);

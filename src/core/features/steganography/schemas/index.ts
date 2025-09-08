@@ -23,10 +23,10 @@ export const fileSchema = z.object({
 
 const secretText = z
   .string()
-  .min(1, 'Secret text is required')
+  .min(1, 'This field is required')
   .max(
     MAX_SECRET_LENGTH,
-    `Secret text must be less than ${MAX_SECRET_LENGTH} characters`
+    `Text must be less than ${MAX_SECRET_LENGTH} characters`
   )
   .trim();
 
