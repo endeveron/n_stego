@@ -1,50 +1,50 @@
 'use server';
 
 import {
-  embedSecretSchema,
-  extractSecretSchema,
+  embedTextSchema,
+  extractTextSchema,
 } from '@/core/features/steganography/schemas';
 import { SteganographyData } from '@/core/features/steganography/types';
 import {
-  embedSecretInImage,
-  extractSecretFromImage,
+  embedTextInImage,
+  extractTextFromImage,
 } from '@/core/features/steganography/utils';
 import { ServerActionResult } from '@/core/types/common';
 import { handleActionError } from '@/core/utils/error';
 
-export async function embedSecretAction(
+export async function embedTextAction(
   formData: FormData
 ): Promise<ServerActionResult<SteganographyData | undefined>> {
   const errMsg = 'Unable to embed provided data.';
   try {
     // Extract data from FormData
-    const secretText = formData.get('secretText') as string;
+    const embedText = formData.get('embedText') as string;
     const imageFile = formData.get('imageFile') as File;
 
-    if (!secretText || !imageFile) {
+    if (!embedText || !imageFile) {
       return handleActionError(`${errMsg} Missing input data.`);
     }
 
     // Validate using your server schema
-    const validatedData = embedSecretSchema.parse({
+    const validatedData = embedTextSchema.parse({
       imageFile,
-      secretText,
+      embedText,
     });
 
     if (!validatedData) {
       return handleActionError(`${errMsg} Invalid input data.`);
     }
 
-    // Embed encrypted secret into image
-    const { success, data, error } = await embedSecretInImage({
+    // Embed encrypted text into image
+    const { success, data, error } = await embedTextInImage({
       imageFile,
-      secretText,
+      embedText,
     });
-    if (error) {
-      return handleActionError(`${errMsg} Could not create archive. ${error}`);
-    }
-    if (!success) {
-      return handleActionError(`${errMsg} Could not create archive.`);
+    if (!success || error) {
+      const message = `${errMsg} Could not create archive.${
+        error ? ' ' + error : ''
+      }`;
+      return handleActionError(message);
     }
 
     return {
@@ -52,7 +52,7 @@ export async function embedSecretAction(
       data, // The modified image
     };
   } catch (error) {
-    console.error('Error in embedSecretAction:', error);
+    console.error('Error in embedTextAction:', error);
 
     if (error && typeof error === 'object' && 'issues' in error) {
       // Zod error
@@ -70,7 +70,7 @@ export async function embedSecretAction(
   }
 }
 
-export async function extractSecretAction(
+export async function extractTextAction(
   formData: FormData
 ): Promise<ServerActionResult<SteganographyData | undefined>> {
   const errMsg = 'Unable to extract.';
@@ -83,7 +83,7 @@ export async function extractSecretAction(
     }
 
     // Validate using your server schema
-    const validatedData = extractSecretSchema.parse({
+    const validatedData = extractTextSchema.parse({
       imageFile,
     });
 
@@ -91,7 +91,7 @@ export async function extractSecretAction(
       return handleActionError(`${errMsg} Invalid input data.`);
     }
 
-    const { success, data, error } = await extractSecretFromImage(
+    const { success, data, error } = await extractTextFromImage(
       validatedData.imageFile
     );
     if (error) {
@@ -106,7 +106,7 @@ export async function extractSecretAction(
       data,
     };
   } catch (error) {
-    console.error('Error in embedSecretAction:', error);
+    console.error('Error in embedTextAction:', error);
 
     if (error && typeof error === 'object' && 'issues' in error) {
       // Zod error

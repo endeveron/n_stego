@@ -2,8 +2,8 @@ import { redirect } from 'next/navigation';
 
 import MainMenu from '@/core/components/ui/MainMenu';
 import { APP_NAME, SIGNIN_REDIRECT } from '@/core/constants';
-import SecretEmbedder from '@/core/features/steganography/components/SecretEmbedder';
-import SecretExtractor from '@/core/features/steganography/components/SecretExtractor';
+import TextEmbedder from '@/core/features/steganography/components/TextEmbedder';
+import TextExtractor from '@/core/features/steganography/components/TextExtractor';
 import { auth } from '~/auth';
 
 export default async function MainPage() {
@@ -29,10 +29,10 @@ export default async function MainPage() {
 
       <main className="relative h-full min-w-xs w-full m-auto lg:flex lg:justify-center p-4 py-28">
         <div className="flex-center flex-1 lg:max-w-lg py-8 lg:py-8">
-          <SecretEmbedder />
+          <TextEmbedder />
         </div>
         <div className="flex-center flex-1 lg:max-w-lg pb-8 lg:pb-8 pt-4">
-          <SecretExtractor />
+          <TextExtractor />
         </div>
       </main>
     </>

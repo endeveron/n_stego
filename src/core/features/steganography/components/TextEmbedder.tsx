@@ -15,7 +15,7 @@ import {
   FormTextarea,
 } from '@/core/components/ui/Form';
 import Loading from '@/core/components/ui/Loading';
-import { embedSecretAction } from '@/core/features/steganography/actions';
+import { embedTextAction } from '@/core/features/steganography/actions';
 import CardTitle from '@/core/features/steganography/components/CardTitle';
 import Countdown from '@/core/features/steganography/components/Countdown';
 import ImageUploader from '@/core/features/steganography/components/ImageUploader';
@@ -25,8 +25,8 @@ import {
   RESET_TIMEOUT,
 } from '@/core/features/steganography/constants';
 import {
-  embedSecretSchema,
-  type EmbedSecretData,
+  embedTextSchema,
+  type EmbedTextData,
 } from '@/core/features/steganography/schemas';
 import {
   SteganographyData,
@@ -34,15 +34,15 @@ import {
 } from '@/core/features/steganography/types';
 import { cn } from '@/core/utils';
 
-export default function SecretEmbedder() {
+export default function TextEmbedder() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isEmbed, setIsEmbed] = useState(false);
 
-  const form = useForm<EmbedSecretData>({
-    resolver: zodResolver(embedSecretSchema),
+  const form = useForm<EmbedTextData>({
+    resolver: zodResolver(embedTextSchema),
     // defaultValues: {
     //   imageFile: undefined,
-    //   secretText: 'Avadakedabra',
+    //   embedText: 'Avadakedabra',
     // },
   });
 
@@ -73,28 +73,28 @@ export default function SecretEmbedder() {
     setIsEmbed(true);
   };
 
-  const onSubmit = async (data: EmbedSecretData) => {
+  const onSubmit = async (data: EmbedTextData) => {
     setIsProcessing(true);
 
     try {
       // Create FormData to send to server action
       const formData = new FormData();
-      formData.append('secretText', data.secretText);
+      formData.append('embedText', data.embedText);
       formData.append('imageFile', data.imageFile);
 
       // Call server action
-      const res = await embedSecretAction(formData);
+      const res = await embedTextAction(formData);
 
       if (res.success) {
         if (res.data) {
           downloadImage(res.data);
         }
       } else {
-        console.error('SecretEmbedder:', res.error);
+        console.error('TextEmbedder:', res.error);
         toast(res.error.message ?? 'Unable to embed data');
       }
     } catch (error) {
-      console.error('SecretEmbedder:', error);
+      console.error('TextEmbedder:', error);
       toast('Oops! Something went wrong. Please try again later');
     } finally {
       setIsProcessing(false);
@@ -154,7 +154,7 @@ export default function SecretEmbedder() {
               {/* Text Input */}
               <FormField
                 control={form.control}
-                name="secretText"
+                name="embedText"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>

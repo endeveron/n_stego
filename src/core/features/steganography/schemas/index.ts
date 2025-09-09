@@ -1,6 +1,6 @@
 import {
   MAX_FILE_SIZE,
-  MAX_SECRET_LENGTH,
+  INPUT_TEXT_MAX_LENGTH,
   SUPPORTED_IMAGE_TYPES,
 } from '@/core/features/steganography/constants';
 import { SupportedImageType } from '@/core/features/steganography/types';
@@ -18,32 +18,36 @@ const imageFile = z
     'Only JPEG and PNG files are supported'
   );
 
-// Embed secret schema (uses a single File)
-export const embedSecretSchema = z.object({
-  secretText: z
+// Embed text schema
+export const embedTextSchema = z.object({
+  embedText: z
     .string()
     .min(1, 'Required')
     .max(
-      MAX_SECRET_LENGTH,
-      `Text must be less than ${MAX_SECRET_LENGTH} characters`
+      INPUT_TEXT_MAX_LENGTH,
+      `Text must be less than ${INPUT_TEXT_MAX_LENGTH} characters`
     )
-    .trim(),
+    .trim()
+    .regex(
+      /^[a-zA-Z0-9\s.,!?'"():;\-_]+$/,
+      'Only letters, numbers, and basic punctuation are allowed'
+    ),
   imageFile,
 });
 
-// Extract secret schema (uses a single File)
-export const extractSecretSchema = z.object({
+// Extract text schema
+export const extractTextSchema = z.object({
   imageFile,
 });
 
 // ZIP payload schema for validation
 export const zipPayloadSchema = z.object({
-  encryptedSecret: z.string().min(1),
+  encryptedText: z.string().min(1),
   timestamp: z.number().positive(),
   version: z.string().min(1),
 });
 
 // Type exports for convenience
-export type EmbedSecretData = z.infer<typeof embedSecretSchema>;
-export type ExtractSecretData = z.infer<typeof extractSecretSchema>;
+export type EmbedTextData = z.infer<typeof embedTextSchema>;
+export type ExtractTextData = z.infer<typeof extractTextSchema>;
 export type ZipPayloadData = z.infer<typeof zipPayloadSchema>;

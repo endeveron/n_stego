@@ -8,26 +8,26 @@ import { toast } from 'sonner';
 import { Button } from '@/core/components/ui/Button';
 import { Form, FormField, FormItem } from '@/core/components/ui/Form';
 import Loading from '@/core/components/ui/Loading';
-import { extractSecretAction } from '@/core/features/steganography/actions';
+import { extractTextAction } from '@/core/features/steganography/actions';
 import CardTitle from '@/core/features/steganography/components/CardTitle';
 import Countdown from '@/core/features/steganography/components/Countdown';
 import ImageUploader from '@/core/features/steganography/components/ImageUploader';
 import { RESET_TIMEOUT } from '@/core/features/steganography/constants';
 import {
-  extractSecretSchema,
-  type ExtractSecretData,
+  extractTextSchema,
+  type ExtractTextData,
 } from '@/core/features/steganography/schemas';
 import { uint8ArrayToString } from '@/core/features/steganography/utils';
 import { useClipboard } from '@/core/hooks/useClipboard';
 import { cn } from '@/core/utils';
 
-export default function SecretExtractor() {
+export default function TextExtractor() {
   const { copy } = useClipboard();
   const [isProcessing, setIsProcessing] = useState(false);
   const [result, setResult] = useState<string | null>(null);
 
-  const form = useForm<ExtractSecretData>({
-    resolver: zodResolver(extractSecretSchema),
+  const form = useForm<ExtractTextData>({
+    resolver: zodResolver(extractTextSchema),
   });
 
   // const selectedFile = form.watch('imageFile');
@@ -43,7 +43,7 @@ export default function SecretExtractor() {
     setResult(null);
   };
 
-  const onSubmit = async (data: ExtractSecretData) => {
+  const onSubmit = async (data: ExtractTextData) => {
     setIsProcessing(true);
 
     try {
@@ -52,7 +52,7 @@ export default function SecretExtractor() {
       formData.append('imageFile', data.imageFile);
 
       // Call server action
-      const res = await extractSecretAction(formData);
+      const res = await extractTextAction(formData);
 
       if (res.success) {
         if (res.data) {
@@ -60,11 +60,11 @@ export default function SecretExtractor() {
           form.reset();
         }
       } else {
-        console.error('SecretExtractor:', res.error);
+        console.error('TextExtractor:', res.error);
         toast(res.error.message ?? 'Unable to extract');
       }
     } catch (error) {
-      console.error('SecretExtractor:', error);
+      console.error('TextExtractor:', error);
       toast('Oops! Something went wrong. Please try again later');
     } finally {
       setIsProcessing(false);

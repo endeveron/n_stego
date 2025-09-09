@@ -1,8 +1,9 @@
+import JSZip from 'jszip';
+
 import { ZIP_SIGNATURE } from '@/core/features/steganography/constants';
 import { decryptString, encryptString } from '@/core/lib/crypto';
-import JSZip from 'jszip';
-import { zipPayloadSchema } from '../schemas';
-import { SteganographyResult, SupportedImageType, ZipPayload } from '../types';
+import { ZipPayloadData, zipPayloadSchema } from '../schemas';
+import { SteganographyResult, SupportedImageType } from '../types';
 
 /**
  * Convert File to Uint8Array
@@ -79,23 +80,23 @@ function findImageEndPosition(
 }
 
 /**
- * Helper to create a ZIP archive containing the encrypted secret
+ * Helper to create a ZIP archive containing the encrypted text
  */
-async function createSecretZip(secretText: string): Promise<Uint8Array> {
+async function createZip(embedText: string): Promise<Uint8Array> {
   const zip = new JSZip();
 
-  // Encrypt the secret
-  const encryptedSecret = encryptString(secretText);
+  // Encrypt the text
+  const encryptedText = encryptString(embedText);
 
   // Create payload with metadata
-  const payload: ZipPayload = {
-    encryptedSecret,
+  const payload: ZipPayloadData = {
+    encryptedText,
     timestamp: Date.now(),
     version: ZIP_SIGNATURE,
   };
 
   // Add to ZIP
-  zip.file('secret.json', JSON.stringify(payload));
+  zip.file('data.json', JSON.stringify(payload));
 
   // Generate ZIP as Uint8Array
   const zipData = await zip.generateAsync({
@@ -108,19 +109,19 @@ async function createSecretZip(secretText: string): Promise<Uint8Array> {
 }
 
 /**
- * Helper to extract and decrypt secret from ZIP data
+ * Helper to extract and decrypt text from ZIP data
  */
-async function extractSecretFromZip(zipData: Uint8Array): Promise<string> {
+async function extractTextFromZip(zipData: Uint8Array): Promise<string> {
   try {
     const zip = new JSZip();
     await zip.loadAsync(zipData);
 
-    const secretFile = zip.file('secret.json');
-    if (!secretFile) {
-      throw new Error('Secret file not found in embedded data');
+    const dataFile = zip.file('data.json');
+    if (!dataFile) {
+      throw new Error('Embedded data file not found');
     }
 
-    const jsonContent = await secretFile.async('string');
+    const jsonContent = await dataFile.async('string');
     const payload = JSON.parse(jsonContent);
 
     // Validate payload structure
@@ -131,40 +132,40 @@ async function extractSecretFromZip(zipData: Uint8Array): Promise<string> {
       throw new Error('Invalid or unsupported embedded data format');
     }
 
-    // Decrypt the secret
-    const decryptedSecret = decryptString(validatedPayload.encryptedSecret);
+    // Decrypt the text
+    const decryptedText = decryptString(validatedPayload.encryptedText);
 
-    if (!decryptedSecret) {
+    if (!decryptedText) {
       throw new Error(
-        'Failed to decrypt secret - invalid data or wrong passphrase'
+        'Failed to decrypt text - invalid data or wrong passphrase'
       );
     }
 
-    return decryptedSecret;
+    return decryptedText;
   } catch (error) {
     if (error instanceof Error) {
-      throw new Error(`Failed to extract secret: ${error.message}`);
+      throw new Error(`Failed to extract text: ${error.message}`);
     }
-    throw new Error('Failed to extract secret: Unknown error');
+    throw new Error('Failed to extract text: Unknown error');
   }
 }
 
 /**
- * Embed secret into image by appending ZIP data
+ * Embed text into image by appending ZIP data
  */
-export async function embedSecretInImage({
+export async function embedTextInImage({
   imageFile,
-  secretText,
+  embedText,
 }: {
   imageFile: File;
-  secretText: string;
+  embedText: string;
 }): Promise<SteganographyResult> {
   try {
     // Convert image to bytes
     const imageBytes = await fileToUint8Array(imageFile);
 
     // Create ZIP with encrypted text
-    const zip = await createSecretZip(secretText);
+    const zip = await createZip(embedText);
 
     // Find where to append data (after image end markers)
     const imageEndPos = findImageEndPosition(
@@ -197,9 +198,9 @@ export async function embedSecretInImage({
 }
 
 /**
- * Extract and decrypt secret from image with embedded data
+ * Extract and decrypt text from image with embedded data
  */
-export async function extractSecretFromImage(
+export async function extractTextFromImage(
   imageFile: File
 ): Promise<SteganographyResult> {
   try {
@@ -225,13 +226,13 @@ export async function extractSecretFromImage(
       throw new Error('No valid embeded data found in this image');
     }
 
-    // Extract and decrypt secret
-    const secretText = await extractSecretFromZip(zipData);
+    // Extract and decrypt text
+    const embedText = await extractTextFromZip(zipData);
 
     return {
       success: true,
       data: {
-        unit8Array: new TextEncoder().encode(secretText),
+        unit8Array: new TextEncoder().encode(embedText),
       },
     };
   } catch (error) {
@@ -240,57 +241,4 @@ export async function extractSecretFromImage(
       error: error instanceof Error ? error.message : 'Unknown error occurred',
     };
   }
-}
-
-/**
- * Validate image format and size
- */
-export function validateImageFile(file: File): {
-  valid: boolean;
-  error?: string;
-} {
-  const supportedFormats: SupportedImageType[] = [
-    'image/jpeg',
-    'image/jpg',
-    'image/png',
-  ];
-
-  if (!supportedFormats.includes(file.type as SupportedImageType)) {
-    return {
-      valid: false,
-      error: 'Only JPEG and PNG files are supported',
-    };
-  }
-
-  if (file.size === 0) {
-    return {
-      valid: false,
-      error: 'File is empty',
-    };
-  }
-
-  if (file.size > 10 * 1024 * 1024) {
-    // 10MB
-    return {
-      valid: false,
-      error: 'File size must be less than 10MB',
-    };
-  }
-
-  return { valid: true };
-}
-
-/**
- * Generate filename for the modified image
- */
-export function generateModifiedFilename(originalFilename: string): string {
-  const lastDotIndex = originalFilename.lastIndexOf('.');
-  const nameWithoutExt =
-    lastDotIndex !== -1
-      ? originalFilename.substring(0, lastDotIndex)
-      : originalFilename;
-  const extension =
-    lastDotIndex !== -1 ? originalFilename.substring(lastDotIndex) : '';
-
-  return `${nameWithoutExt}_with_secret${extension}`;
 }
