@@ -1,10 +1,11 @@
+import { z } from 'zod';
+
 import {
   INPUT_IMAGE_MAX_SIZE,
   INPUT_TEXT_MAX_LENGTH,
   SUPPORTED_IMAGE_TYPES,
 } from '@/core/features/steganography/constants';
 import { SupportedImageType } from '@/core/features/steganography/types';
-import { z } from 'zod';
 
 const imageFile = z
   .any()

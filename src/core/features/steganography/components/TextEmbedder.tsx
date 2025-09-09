@@ -40,10 +40,6 @@ export default function TextEmbedder() {
 
   const form = useForm<EmbedTextData>({
     resolver: zodResolver(embedTextSchema),
-    // defaultValues: {
-    //   imageFile: undefined,
-    //   embedText: 'Avadakedabra',
-    // },
   });
 
   const downloadImage = (data: SteganographyData) => {

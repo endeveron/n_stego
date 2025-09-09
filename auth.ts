@@ -54,9 +54,6 @@ export const {
           role: user?.role || UserRole.user,
           isPremium: user?.isPremium || false,
           accessToken: account.access_token,
-          // accessTokenExpires: account.expires_at
-          //   ? account.expires_at * 1000
-          //   : Date.now() + 24 * 60 * 60 * 1000, // 24 hours default
         };
       }
 

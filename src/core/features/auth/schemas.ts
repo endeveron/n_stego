@@ -38,9 +38,6 @@ export const googleSignInSchema = z.object({
     .email({
       message: 'Invalid email',
     }),
-  // .refine((val) => val.endsWith('@gmail.com'), {
-  //   message: 'Email must be a gmail.com address',
-  // }),
   password: z
     .string()
     .nonempty({

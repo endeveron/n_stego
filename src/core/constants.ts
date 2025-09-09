@@ -8,7 +8,6 @@ const DB_CONNECTION_STRING = process.env.DB_CONNECTION_STRING as string;
 
 const AUTH_SECRET = process.env.DB_CONNECTION_STRING as string;
 const ENCRYPTION_PASSPHRASE = process.env.ENCRYPTION_PASSPHRASE as string;
-// const FIXED_SALT = process.env.FIXED_SALT as string;
 
 const EMAIL_JWT = process.env.EMAIL_JWT as string;
 const NODEMAILER_USER = process.env.NODEMAILER_USER as string;
@@ -32,7 +31,6 @@ export {
   DB_CONNECTION_STRING,
   AUTH_SECRET,
   ENCRYPTION_PASSPHRASE,
-  // FIXED_SALT,
   EMAIL_JWT,
   NODEMAILER_USER,
   NODEMAILER_PASSWORD,

@@ -373,17 +373,6 @@ export const verifyUserId = async (
   }
 };
 
-// /**
-//  * Generates a JWT token for the user authentication using a user's object ID.
-//  *
-//  * @param {string} userId user._id, a mongoDb ObjectId prop of the user object.
-//  * @returns a JSON Web Token (JWT) that is signed with the userId and jwtAuthKey. The token has an
-//  * expiration time of 72 hours.
-//  */
-// export const generateAuthToken = async (userId: string) => {
-//   return jwt.sign({ userId }, EMAIL_JWT, { expiresIn: '72h' });
-// };
-
 /**
  * Resends a verification email to a user's email address for email verification.
  *
@@ -490,10 +479,6 @@ export const authorizeUser = async ({ email, password }: Credentials) => {
       role: user.role as UserRole,
       isPremium: !!user?.premium?.timestamp as boolean,
     };
-
-    // Debug logging
-    // console.log('User data being returned from authorizeUser:', userData);
-    // console.log('Premium value:', userData.premium);
 
     if (passwordsMatch) return userData;
     return null;

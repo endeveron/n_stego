@@ -25,7 +25,7 @@ export async function embedTextAction(
       return handleActionError(`${errMsg} Missing input data.`);
     }
 
-    // Validate using your server schema
+    // Validate using server schema
     const validatedData = embedTextSchema.parse({
       imageFile,
       embedText,

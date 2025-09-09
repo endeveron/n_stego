@@ -55,26 +55,6 @@ function findImageEndPosition(
     // If no IEND found, append at the end
     return imageBytes.length;
   }
-  // } else if (format === 'image/png') {
-  //   // PNG IEND chunk format: 4 bytes length (== 0), 4 bytes 'IEND', 4 bytes CRC
-  //   for (let i = imageBytes.length - 12; i >= 0; i--) {
-  //     // Check for the IEND chunk (starts with 0x00 0x00 0x00 0x00 0x49 0x45 0x4E 0x44)
-  //     if (
-  //       imageBytes[i] === 0x00 &&
-  //       imageBytes[i + 1] === 0x00 &&
-  //       imageBytes[i + 2] === 0x00 &&
-  //       imageBytes[i + 3] === 0x00 &&
-  //       imageBytes[i + 4] === 0x49 && // I
-  //       imageBytes[i + 5] === 0x45 && // E
-  //       imageBytes[i + 6] === 0x4e && // N
-  //       imageBytes[i + 7] === 0x44 // D
-  //     ) {
-  //       return i + 12; // Entire IEND chunk = 12 bytes
-  //     }
-  //   }
-  //   // If no IEND found, append at the end
-  //   return imageBytes.length;
-  // }
 
   return imageBytes.length;
 }

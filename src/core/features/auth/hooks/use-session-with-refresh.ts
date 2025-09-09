@@ -48,15 +48,12 @@ export function useSessionWithRefresh(): UseSessionWithRefreshReturn {
   const signOutSafely = useCallback(async (): Promise<void> => {
     // Prevent multiple simultaneous sign-outs using both ref and global state
     if (signOutInProgress.current || !authStateManager.canSignOut()) {
-      // console.log('Sign out already in progress, skipping...');
       return;
     }
 
     try {
       signOutInProgress.current = true;
       authStateManager.setSigningOut(true);
-
-      // console.log('Starting sign out process...');
 
       // Clear any pending refresh timers
       setIsRefreshing(false);
@@ -67,7 +64,6 @@ export function useSessionWithRefresh(): UseSessionWithRefreshReturn {
       });
 
       authStateManager.setSignedOut(true);
-      // console.log('Sign out completed');
     } catch (error) {
       console.error('Sign out error:', error);
     } finally {

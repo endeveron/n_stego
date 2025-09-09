@@ -5,8 +5,6 @@ import {
   nodemailerUser,
 } from '@/core/configs/nodemailer';
 import { APP_NAME } from '@/core/constants';
-// import { BASE_URL } from '@/core/constants';
-// import { BILLING_ACC } from '@/core/features/premium/constants';
 
 export type SendEmailArgs = {
   from: string;

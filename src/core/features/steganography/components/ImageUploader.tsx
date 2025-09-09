@@ -1,21 +1,15 @@
 'use client';
 
-import {
-  FormControl,
-  FormInput,
-  FormMessage,
-  // useFormField,
-} from '@/core/components/ui/Form';
-
 import Image from 'next/image';
 import { useCallback, useEffect, useRef, useState } from 'react';
+
+import { FormControl, FormInput, FormMessage } from '@/core/components/ui/Form';
 
 type ImageUploaderProps = {
   onChange: (file: File) => void;
 };
 
 export default function ImageUploader({ onChange }: ImageUploaderProps) {
-  // const { error } = useFormField();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [previewFile, setPreviewFile] = useState<File | null>(null);
 

@@ -30,8 +30,6 @@ export default function TextExtractor() {
     resolver: zodResolver(extractTextSchema),
   });
 
-  // const selectedFile = form.watch('imageFile');
-
   const handleCopyToClipboard = () => {
     if (!result?.trim()) return;
 
