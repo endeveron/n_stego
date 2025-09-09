@@ -3,10 +3,9 @@ import { Mulish } from 'next/font/google';
 
 import { Providers } from '@/core/context/providers';
 import { Toaster } from '@/core/components/ui/Sonner';
-// import { ASSET_URL, BASE_URL } from '@/core/constants';
+import { APP_NAME } from '@/core/constants';
 
 import '@/core/globals.css';
-import { APP_NAME } from '@/core/constants';
 
 export const viewport: Viewport = {
   interactiveWidget: 'resizes-content',
@@ -21,59 +20,14 @@ const mulishSans = Mulish({
 export const metadata: Metadata = {
   title: `${APP_NAME} — Embed in image`,
   applicationName: APP_NAME,
-  description: `${APP_NAME} — a secure steganography web app that lets you hide encrypted messages inside images without altering their visible appearance.`,
+  description: `A secure steganography web app that lets you hide encrypted messages inside images without altering their visible appearance.`,
   creator: 'Endeveron',
-  // metadataBase: new URL(BASE_URL),
-  // openGraph: {
-  //   title: 'Chat AI',
-  //   description: `Chat AI - Beautiful AI companion`,
-  //   siteName: 'Chat AI',
-  //   type: 'website',
-  //   url: '/',
-  //   locale: 'en_US',
-  //   images: [
-  //     {
-  //       url: `${BASE_URL}/images/og-image.png`,
-  //       width: 1200,
-  //       height: 630,
-  //       alt: `OG Image`,
-  //       type: 'image/png',
-  //     },
-  //     {
-  //       url: `${BASE_URL}/images/og-image-square.png`,
-  //       width: 1200,
-  //       height: 1200,
-  //       alt: `OG Image`,
-  //       type: 'image/png',
-  //     },
-  //   ],
-  // },
-  // icons: {
-  //   icon: {
-  //     // url: 'https://chatai-sigma-three.vercel.app/favicon.ico',
-  //     url: `${ASSET_URL}/icons/favicon.ico`,
-  //     type: 'image/image/ico',
-  //   },
-  // },
-
-  // // Additional meta tags for messaging apps and social platforms
-  // other: {
-  //   // WhatsApp and general mobile
-  //   'mobile-web-app-capable': 'yes',
-  //   'apple-mobile-web-app-capable': 'yes',
-  //   'apple-mobile-web-app-status-bar-style': 'default',
-  //   'apple-mobile-web-app-title': 'Games',
-
-  //   // Pinterest
-  //   'pinterest-rich-pin': 'true',
-
-  //   // Generic social media
-  //   robots: 'index, follow',
-  //   googlebot: 'index, follow',
-
-  //   // For better link previews in messaging apps
-  //   'format-detection': 'telephone=no',
-  // },
+  icons: {
+    icon: {
+      url: `https://n-stego.vercel.app/favicon.ico`,
+      type: 'image/image/ico',
+    },
+  },
 };
 
 export default function RootLayout({
