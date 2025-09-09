@@ -1,5 +1,5 @@
 import {
-  MAX_FILE_SIZE,
+  INPUT_IMAGE_MAX_SIZE,
   INPUT_TEXT_MAX_LENGTH,
   SUPPORTED_IMAGE_TYPES,
 } from '@/core/features/steganography/constants';
@@ -10,8 +10,8 @@ const imageFile = z
   .any()
   .refine((file) => file instanceof File, 'Provide a valid image')
   .refine(
-    (file) => file?.size <= MAX_FILE_SIZE,
-    `File size must be less than ${MAX_FILE_SIZE / 1024 / 1024}MB`
+    (file) => file?.size <= INPUT_IMAGE_MAX_SIZE,
+    `File size must be less than ${INPUT_IMAGE_MAX_SIZE / 1024 / 1024}MB`
   )
   .refine(
     (file) => SUPPORTED_IMAGE_TYPES.includes(file?.type as SupportedImageType),
