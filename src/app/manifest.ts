@@ -3,7 +3,7 @@ import { APP_NAME } from '@/core/constants';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: `${APP_NAME} — Text in Image`,
+    name: `${APP_NAME} – Text in Image`,
     short_name: APP_NAME,
     description:
       'A secure steganography app that lets you hide encrypted messages inside images.',

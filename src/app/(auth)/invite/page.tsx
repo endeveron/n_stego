@@ -6,7 +6,7 @@ import CardLogo from '@/core/features/auth/components/CardLogo';
 import InviteForm from '@/core/features/auth/components/InviteForm';
 
 export const metadata: Metadata = {
-  title: `Invite code — ${APP_NAME}`,
+  title: `Invite code – ${APP_NAME}`,
   description: 'Account creation',
 };
 

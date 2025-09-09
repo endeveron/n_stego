@@ -6,7 +6,7 @@ import CardLogo from '@/core/features/auth/components/CardLogo';
 import SignUpForm from '@/core/features/auth/components/SignupForm';
 
 export const metadata: Metadata = {
-  title: `Sign Up — ${APP_NAME}`,
+  title: `Sign Up – ${APP_NAME}`,
   description: 'Account creation',
 };
 

@@ -12,7 +12,7 @@ import { getErrorMessageFromSearchParams } from '@/core/utils/error';
 import { EMAIL_ERRORS } from '@/core/features/auth/constants';
 
 export const metadata: Metadata = {
-  title: `Email error — ${APP_NAME}`,
+  title: `Email error – ${APP_NAME}`,
   description: 'Email confirmation',
 };
 

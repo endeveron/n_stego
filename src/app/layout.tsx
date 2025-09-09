@@ -18,7 +18,7 @@ const mulishSans = Mulish({
 });
 
 export const metadata: Metadata = {
-  title: `${APP_NAME} — Embed Text in Image`,
+  title: `${APP_NAME} – Embed Text in Image`,
   applicationName: APP_NAME,
   description: `A secure steganography web app that lets you hide encrypted messages inside images without altering their visible appearance.`,
   creator: 'Endeveron',

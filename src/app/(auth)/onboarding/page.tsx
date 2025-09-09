@@ -12,7 +12,7 @@ import { SearchParams } from '@/core/types/common';
 import { APP_NAME } from '@/core/constants';
 
 export const metadata: Metadata = {
-  title: `Onboarding — ${APP_NAME}`,
+  title: `Onboarding – ${APP_NAME}`,
   description: 'Account creation',
 };
 

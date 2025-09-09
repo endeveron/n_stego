@@ -10,7 +10,7 @@ import GenerateTokenButton from '@/core/features/auth/components/GenerateTokenBu
 import { SearchParams } from '@/core/types/common';
 
 export const metadata: Metadata = {
-  title: `Verify Email — ${APP_NAME}`,
+  title: `Verify Email – ${APP_NAME}`,
   description: 'Account creation',
 };
 
