@@ -1,12 +1,8 @@
+import { ZIP_SIGNATURE } from '@/core/features/steganography/constants';
 import { decryptString, encryptString } from '@/core/lib/crypto';
 import JSZip from 'jszip';
 import { zipPayloadSchema } from '../schemas';
-import {
-  SteganographyResult,
-  SupportedImageFormat,
-  ZIP_SIGNATURE,
-  ZipPayload,
-} from '../types';
+import { SteganographyResult, SupportedImageType, ZipPayload } from '../types';
 
 /**
  * Convert File to Uint8Array
@@ -16,21 +12,9 @@ export async function fileToUint8Array(file: File): Promise<Uint8Array> {
   return new Uint8Array(arrayBuffer);
 }
 
-// /**
-//  * Convert Uint8Array to base64 string for download
-//  */
-// export function uint8ArrayToBase64(uint8Array: Uint8Array): string {
-//   let binaryString = '';
-//   const chunkSize = 0x8000; // 32KB chunks to avoid call stack overflow
-
-//   for (let i = 0; i < uint8Array.length; i += chunkSize) {
-//     const chunk = uint8Array.subarray(i, i + chunkSize);
-//     binaryString += String.fromCharCode.apply(null, Array.from(chunk));
-//   }
-
-//   return btoa(binaryString);
-// }
-
+/**
+ * Convert Uint8Array to string
+ */
 export function uint8ArrayToString(data: Uint8Array<ArrayBufferLike>): string {
   const decoder = new TextDecoder('utf-8');
   return decoder.decode(data);
@@ -42,8 +26,10 @@ export function uint8ArrayToString(data: Uint8Array<ArrayBufferLike>): string {
  */
 function findImageEndPosition(
   imageBytes: Uint8Array,
-  format: SupportedImageFormat
+  format: SupportedImageType
 ): number {
+  console.log('format', format);
+
   if (format === 'image/jpeg' || format === 'image/jpg') {
     // Look for JPEG EOI marker (0xFF 0xD9)
     for (let i = imageBytes.length - 2; i >= 0; i--) {
@@ -68,6 +54,26 @@ function findImageEndPosition(
     // If no IEND found, append at the end
     return imageBytes.length;
   }
+  // } else if (format === 'image/png') {
+  //   // PNG IEND chunk format: 4 bytes length (== 0), 4 bytes 'IEND', 4 bytes CRC
+  //   for (let i = imageBytes.length - 12; i >= 0; i--) {
+  //     // Check for the IEND chunk (starts with 0x00 0x00 0x00 0x00 0x49 0x45 0x4E 0x44)
+  //     if (
+  //       imageBytes[i] === 0x00 &&
+  //       imageBytes[i + 1] === 0x00 &&
+  //       imageBytes[i + 2] === 0x00 &&
+  //       imageBytes[i + 3] === 0x00 &&
+  //       imageBytes[i + 4] === 0x49 && // I
+  //       imageBytes[i + 5] === 0x45 && // E
+  //       imageBytes[i + 6] === 0x4e && // N
+  //       imageBytes[i + 7] === 0x44 // D
+  //     ) {
+  //       return i + 12; // Entire IEND chunk = 12 bytes
+  //     }
+  //   }
+  //   // If no IEND found, append at the end
+  //   return imageBytes.length;
+  // }
 
   return imageBytes.length;
 }
@@ -163,21 +169,24 @@ export async function embedSecretInImage({
     // Find where to append data (after image end markers)
     const imageEndPos = findImageEndPosition(
       imageBytes,
-      imageFile.type as SupportedImageFormat
+      imageFile.type as SupportedImageType
     );
 
     // Create new array with image + ZIP data
-    const modifiedImage = new Uint8Array(imageEndPos + zip.length);
+    const unit8Array = new Uint8Array(imageEndPos + zip.length);
 
     // Copy original image data up to end position
-    modifiedImage.set(imageBytes.subarray(0, imageEndPos), 0);
+    unit8Array.set(imageBytes.subarray(0, imageEndPos), 0);
 
     // Append ZIP data
-    modifiedImage.set(zip, imageEndPos);
+    unit8Array.set(zip, imageEndPos);
 
     return {
       success: true,
-      data: modifiedImage,
+      data: {
+        unit8Array,
+        imageType: imageFile.type as SupportedImageType,
+      },
     };
   } catch (error) {
     return {
@@ -200,12 +209,12 @@ export async function extractSecretFromImage(
     // Find where original image ends
     const imageEndPos = findImageEndPosition(
       imageBytes,
-      imageFile.type as SupportedImageFormat
+      imageFile.type as SupportedImageType
     );
 
     // Check if there's additional data after the image
     if (imageBytes.length <= imageEndPos) {
-      throw new Error('No embedded data found in this image');
+      throw new Error('No embeded data found in this image');
     }
 
     // Extract the appended data (should be ZIP)
@@ -213,7 +222,7 @@ export async function extractSecretFromImage(
 
     // Verify it's a valid ZIP by checking ZIP signature (PK)
     if (zipData.length < 4 || zipData[0] !== 0x50 || zipData[1] !== 0x4b) {
-      throw new Error('No valid embedded data found in this image');
+      throw new Error('No valid embeded data found in this image');
     }
 
     // Extract and decrypt secret
@@ -221,7 +230,9 @@ export async function extractSecretFromImage(
 
     return {
       success: true,
-      data: new TextEncoder().encode(secretText), // Convert to Uint8Array for consistency
+      data: {
+        unit8Array: new TextEncoder().encode(secretText),
+      },
     };
   } catch (error) {
     return {
@@ -238,13 +249,13 @@ export function validateImageFile(file: File): {
   valid: boolean;
   error?: string;
 } {
-  const supportedFormats: SupportedImageFormat[] = [
+  const supportedFormats: SupportedImageType[] = [
     'image/jpeg',
     'image/jpg',
     'image/png',
   ];
 
-  if (!supportedFormats.includes(file.type as SupportedImageFormat)) {
+  if (!supportedFormats.includes(file.type as SupportedImageType)) {
     return {
       valid: false,
       error: 'Only JPEG and PNG files are supported',

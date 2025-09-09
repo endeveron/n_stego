@@ -116,7 +116,7 @@ function FormInput({
       type={type}
       data-slot="input"
       className={cn(
-        'h-10 w-full px-2 pb-0.5 flex font-semibold placeholder:font-normal placeholder:text-muted items-center rounded-sm border-2 border-input-border bg-input file:border-dashed file:border-muted/40 file:text-muted file:text-sm file:font-medium focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:ring-error aria-invalid:border-error trans-c',
+        'h-10 w-full px-2 pb-0.5 flex font-semibold placeholder:font-normal placeholder:text-muted items-center rounded-sm border-2 border-input-border bg-input file:border-dashed file:border-muted/40 file:text-muted file:text-sm file:font-medium focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:ring-error/80 aria-invalid:border-error/80 trans-c',
         className
       )}
       {...props}
@@ -132,7 +132,7 @@ function FormTextarea({
     <textarea
       data-slot="textarea"
       className={cn(
-        'w-full p-2 flex font-semibold border-2 border-input-border rounded-sm bg-input placeholder:font-normal placeholder:text-sm placeholder:leading-8 placeholder:text-muted field-sizing-content transition-[color,box-shadow] outline-none focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:ring-error aria-invalid:border-error trans-c',
+        'w-full p-2 flex font-semibold border-2 border-input-border rounded-sm bg-input placeholder:font-normal placeholder:text-sm placeholder:leading-8 placeholder:text-muted field-sizing-content outline-none focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:ring-error/80 aria-invalid:border-error/80 trans-c',
         className
       )}
       {...props}

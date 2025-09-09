@@ -27,9 +27,14 @@ export interface ExtractSecretResponse {
   error?: string;
 }
 
+export type SteganographyData = {
+  unit8Array: Uint8Array<ArrayBufferLike>;
+  imageType?: SupportedImageType;
+};
+
 export interface SteganographyResult {
   success: boolean;
-  data?: Uint8Array;
+  data?: SteganographyData;
   error?: string;
 }
 
@@ -39,16 +44,5 @@ export interface ZipPayload {
   version: string;
 }
 
-// Supported image formats
-export type SupportedImageFormat = 'image/jpeg' | 'image/jpg' | 'image/png';
-
-// Constants
-export const SUPPORTED_FORMATS: SupportedImageFormat[] = [
-  'image/jpeg',
-  'image/jpg',
-  'image/png',
-];
-
-export const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
-export const MAX_SECRET_LENGTH = 5000; // characters
-export const ZIP_SIGNATURE = 'STEG_V1'; // Version signature for our embedded data
+// Supported image types
+export type SupportedImageType = 'image/jpeg' | 'image/jpg' | 'image/png';

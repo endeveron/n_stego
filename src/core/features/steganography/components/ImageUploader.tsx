@@ -52,7 +52,7 @@ export default function ImageUploader({ onChange }: ImageUploaderProps) {
     <>
       <FormControl>
         <div
-          className="relative min-h-24 border-2 border-dashed border-muted/40 p-4 rounded-md text-center cursor-pointer hover:bg-muted/10 transition-colors"
+          className="relative min-h-24 border-2 border-dashed border-border p-4 rounded-md text-center cursor-pointer hover:bg-popover-focus trans-c"
           onClick={() => inputRef.current?.click()}
           onDragOver={(e) => e.preventDefault()}
           onDrop={handleDrop}
@@ -62,7 +62,7 @@ export default function ImageUploader({ onChange }: ImageUploaderProps) {
               <p className="text-sm text-muted">
                 Pick or drag an image
                 <br />
-                JPEG or PNG
+                JPG or PNG
               </p>
             </div>
           )}

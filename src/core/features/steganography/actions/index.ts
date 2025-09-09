@@ -4,6 +4,7 @@ import {
   embedSecretSchema,
   extractSecretSchema,
 } from '@/core/features/steganography/schemas';
+import { SteganographyData } from '@/core/features/steganography/types';
 import {
   embedSecretInImage,
   extractSecretFromImage,
@@ -13,7 +14,7 @@ import { handleActionError } from '@/core/utils/error';
 
 export async function embedSecretAction(
   formData: FormData
-): Promise<ServerActionResult<Uint8Array<ArrayBufferLike> | undefined>> {
+): Promise<ServerActionResult<SteganographyData | undefined>> {
   const errMsg = 'Unable to embed provided data.';
   try {
     // Extract data from FormData
@@ -24,14 +25,6 @@ export async function embedSecretAction(
       return handleActionError(`${errMsg} Missing input data.`);
     }
 
-    // console.log('Server received data:', {
-    //   secretText,
-    //   fileName: imageFile?.name,
-    //   fileSize: imageFile?.size,
-    //   fileType: imageFile?.type,
-    //   isFile: imageFile instanceof File,
-    // });
-
     // Validate using your server schema
     const validatedData = embedSecretSchema.parse({
       imageFile,
@@ -41,13 +34,6 @@ export async function embedSecretAction(
     if (!validatedData) {
       return handleActionError(`${errMsg} Invalid input data.`);
     }
-
-    // console.log('Data validation passed:', {
-    //   secretText: validatedData.secretText,
-    //   imageFileName: validatedData.imageFile.name,
-    //   imageFileSize: validatedData.imageFile.size,
-    //   imageFileType: validatedData.imageFile.type,
-    // });
 
     // Embed encrypted secret into image
     const { success, data, error } = await embedSecretInImage({
@@ -86,8 +72,8 @@ export async function embedSecretAction(
 
 export async function extractSecretAction(
   formData: FormData
-): Promise<ServerActionResult<Uint8Array<ArrayBufferLike> | undefined>> {
-  const errMsg = 'Unable to extract data.';
+): Promise<ServerActionResult<SteganographyData | undefined>> {
+  const errMsg = 'Unable to extract.';
   try {
     // Extract data from FormData
     const imageFile = formData.get('imageFile') as File;

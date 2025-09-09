@@ -6,6 +6,7 @@ import { Toaster } from '@/core/components/ui/Sonner';
 // import { ASSET_URL, BASE_URL } from '@/core/constants';
 
 import '@/core/globals.css';
+import { APP_NAME } from '@/core/constants';
 
 export const viewport: Viewport = {
   interactiveWidget: 'resizes-content',
@@ -18,9 +19,9 @@ const mulishSans = Mulish({
 });
 
 export const metadata: Metadata = {
-  title: 'Steganography',
-  applicationName: 'Steganography',
-  description: 'Steganography',
+  title: `${APP_NAME} — Embed in image`,
+  applicationName: APP_NAME,
+  description: `${APP_NAME} — a secure steganography web app that lets you hide encrypted messages inside images without altering their visible appearance.`,
   creator: 'Endeveron',
   // metadataBase: new URL(BASE_URL),
   // openGraph: {
@@ -84,7 +85,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${mulishSans.variable} antialiased`}>
         <Providers>
-          <div className="layout">{children}</div>
+          {children}
           <Toaster />
         </Providers>
       </body>

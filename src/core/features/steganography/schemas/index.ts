@@ -1,21 +1,20 @@
-import { z } from 'zod';
-
 import {
   MAX_FILE_SIZE,
   MAX_SECRET_LENGTH,
-  SUPPORTED_FORMATS,
-  SupportedImageFormat,
-} from '../types';
+  SUPPORTED_IMAGE_TYPES,
+} from '@/core/features/steganography/constants';
+import { SupportedImageType } from '@/core/features/steganography/types';
+import { z } from 'zod';
 
 const imageFile = z
   .any()
-  .refine((file) => file instanceof File, 'Provide a valid file')
+  .refine((file) => file instanceof File, 'Provide a valid image')
   .refine(
     (file) => file?.size <= MAX_FILE_SIZE,
     `File size must be less than ${MAX_FILE_SIZE / 1024 / 1024}MB`
   )
   .refine(
-    (file) => SUPPORTED_FORMATS.includes(file?.type as SupportedImageFormat),
+    (file) => SUPPORTED_IMAGE_TYPES.includes(file?.type as SupportedImageType),
     'Only JPEG and PNG files are supported'
   );
 

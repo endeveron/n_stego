@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 
-import { SIGNIN_REDIRECT } from '@/core/constants';
+import MainMenu from '@/core/components/ui/MainMenu';
+import { APP_NAME, SIGNIN_REDIRECT } from '@/core/constants';
 import SecretEmbedder from '@/core/features/steganography/components/SecretEmbedder';
 import SecretExtractor from '@/core/features/steganography/components/SecretExtractor';
 import { auth } from '~/auth';
@@ -10,13 +11,30 @@ export default async function MainPage() {
   if (!session?.user) return redirect(SIGNIN_REDIRECT);
 
   return (
-    <main className="w-full lg:flex justify-center p-4">
-      <div className="flex-center flex-1 lg:max-w-lg py-16 lg:py-8">
-        <SecretEmbedder />
+    <>
+      {/* Header */}
+      <div className="fixed z-10 top-6 left-6 flex">
+        <MainMenu
+          userData={{ name: session.user.name, email: session.user.email }}
+        />
+        <div className="ml-6 -mt-2 lg:-mt-3 cursor-default">
+          <h1 className="font-black text-title dark:text-title/70 trans-c">
+            {APP_NAME}
+          </h1>
+          <p className="ml-2 lg:ml-7 relative z-20 mt-0 text-xs text-muted leading-3 bg-background lg:mt-1 lg:text-sm trans-c">
+            Embed in image
+          </p>
+        </div>
       </div>
-      <div className="flex-center flex-1 lg:max-w-lg pb-16 lg:pb-8 pt-4">
-        <SecretExtractor />
-      </div>
-    </main>
+
+      <main className="relative h-full min-w-xs w-full m-auto lg:flex lg:justify-center p-4 py-28">
+        <div className="flex-center flex-1 lg:max-w-lg py-8 lg:py-8">
+          <SecretEmbedder />
+        </div>
+        <div className="flex-center flex-1 lg:max-w-lg pb-8 lg:pb-8 pt-4">
+          <SecretExtractor />
+        </div>
+      </main>
+    </>
   );
 }

@@ -1,9 +1,11 @@
-import { AppLogo } from '@/core/components/icons/AppLogo';
+import { APP_NAME } from '@/core/constants';
 
 const CardLogo = () => {
   return (
     <div className="relative w-full flex justify-center">
-      <AppLogo className="absolute -top-38 left-1/2 -translate-x-1/2" />
+      <div className="absolute -top-20 text-5xl text-muted/20 leading-0 font-black dark:text-title/70 trans-c">
+        {APP_NAME}
+      </div>
     </div>
   );
 };

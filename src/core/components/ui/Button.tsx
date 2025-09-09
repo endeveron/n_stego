@@ -10,15 +10,15 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          'text-btn-foreground font-semibold bg-btn-background hover:text-btn-foreground-hover hover:bg-btn-background-hover',
+          'text-btn-foreground font-bold bg-btn-background hover:text-btn-foreground-hover hover:bg-btn-background-hover',
         accent:
-          'text-btn-accent-foreground font-semibold bg-btn-accent-background hover:text-btn-accent-foreground-hover hover:bg-btn-accent-background-hover duration-500',
+          'text-btn-accent-foreground font-bold bg-btn-accent-background hover:text-btn-accent-foreground-hover hover:bg-btn-accent-background-hover duration-500',
         secondary:
-          'text-btn-secondary-foreground bg-btn-secondary-background hover:text-btn-secondary-foreground-hover hover:bg-btn-secondary-background-hover shadow-xs dark:shadow-none',
+          'text-btn-secondary-foreground font-bold bg-btn-secondary-background hover:text-btn-secondary-foreground-hover hover:bg-btn-secondary-background-hover',
         outline:
-          'border border-border text-muted hover:border-transparent hover:bg-btn-secondary-background hover:text-foreground',
+          'border border-border font-bold text-muted hover:border-transparent hover:bg-btn-secondary-background hover:text-foreground',
         ghost:
-          'text-btn-secondary-foreground hover:bg-btn-secondary-background',
+          'text-btn-secondary-foreground font-bold hover:bg-btn-secondary-background',
       },
       size: {
         default: 'h-11 px-4 has-[>svg]:px-3',

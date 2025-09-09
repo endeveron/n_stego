@@ -1,7 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
@@ -9,7 +9,10 @@ import { Button } from '@/core/components/ui/Button';
 import { Form, FormField, FormItem } from '@/core/components/ui/Form';
 import Loading from '@/core/components/ui/Loading';
 import { extractSecretAction } from '@/core/features/steganography/actions';
+import CardTitle from '@/core/features/steganography/components/CardTitle';
+import Countdown from '@/core/features/steganography/components/Countdown';
 import ImageUploader from '@/core/features/steganography/components/ImageUploader';
+import { RESET_TIMEOUT } from '@/core/features/steganography/constants';
 import {
   extractSecretSchema,
   type ExtractSecretData,
@@ -53,33 +56,46 @@ export default function SecretExtractor() {
 
       if (res.success) {
         if (res.data) {
-          setResult(uint8ArrayToString(res.data));
+          setResult(uint8ArrayToString(res.data.unit8Array));
           form.reset();
         }
       } else {
-        console.error('Server error:', res.error);
-        toast('Server error');
+        console.error('SecretExtractor:', res.error);
+        toast(res.error.message ?? 'Unable to extract');
       }
     } catch (error) {
-      console.error('Client error:', error);
-      toast('Oops! Something went wrong');
+      console.error('SecretExtractor:', error);
+      toast('Oops! Something went wrong. Please try again later');
     } finally {
       setIsProcessing(false);
     }
   };
 
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+    if (result) {
+      timeout = setTimeout(() => {
+        setResult(null);
+      }, RESET_TIMEOUT);
+    }
+
+    return () => {
+      if (timeout) clearTimeout(timeout);
+    };
+  }, [result]);
+
   return (
-    <div className="w-full max-w-md pt-0 px-6 pb-8 border-border/50 border-2 rounded-2xl trans-a">
-      <div className="flex-center -translate-y-6">
-        <h1 className="w-fit text-2xl text-center text-title font-bold  bg-background px-4 trans-c">
-          Extract Secret from Image
-        </h1>
-      </div>
+    <div className="relative mt-10 lg:mt-0 w-full max-w-md p-6 rounded-2xl bg-card shadow-xs dark:shadow-none trans-c">
+      <CardTitle>Extract</CardTitle>
 
       {result ? (
         <>
-          <div className="min-h-24 flex-center flex-col gap-4 p-6 rounded-lg bg-input/40 cursor-default trans-c">
-            <div className="text-lg font-semibold">{result}</div>
+          <div className="absolute -top-3 -right-3 rounded-full bg-background p-1 trans-c">
+            <Countdown />
+          </div>
+
+          <div className="min-h-24 flex-center flex-col gap-4 p-6 rounded-lg bg-popover-focus cursor-default trans-c">
+            <div className="text-lg font-bold">{result}</div>
           </div>
 
           {/* Buttons */}
@@ -98,7 +114,7 @@ export default function SecretExtractor() {
               variant="secondary"
               disabled={isProcessing}
             >
-              Clear
+              Reset
             </Button>
           </div>
         </>

@@ -14,7 +14,7 @@ const EMAIL_JWT = process.env.EMAIL_JWT as string;
 const NODEMAILER_USER = process.env.NODEMAILER_USER as string;
 const NODEMAILER_PASSWORD = process.env.NODEMAILER_PASSWORD as string;
 
-const APP_NAME = 'Chat AI';
+const APP_NAME = 'Stego';
 
 // LocalStorage keys
 const LANG_CODE_KEY = 'lang-code';
