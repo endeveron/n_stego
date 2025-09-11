@@ -83,7 +83,7 @@ export default function TextExtractor() {
   }, [result]);
 
   return (
-    <div className="relative mt-10 lg:mt-0 w-full max-w-md p-6 rounded-2xl bg-card shadow-xs dark:shadow-none trans-c">
+    <div className="relative mt-10 lg:mt-0 w-full max-w-md p-6 rounded-2xl bg-card trans-c">
       <CardTitle>Extract</CardTitle>
 
       {result ? (

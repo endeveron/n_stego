@@ -111,7 +111,7 @@ export default function TextEmbedder() {
   }, [isEmbed]);
 
   return (
-    <div className="relative w-full max-w-md p-6 rounded-2xl bg-card shadow-xs dark:shadow-none trans-c">
+    <div className="relative w-full max-w-md p-6 rounded-2xl bg-card trans-c">
       <CardTitle>Embed</CardTitle>
 
       {isEmbed ? (

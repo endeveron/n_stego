@@ -12,7 +12,7 @@
   --brand-secondary-hue: 195;
   --error-hue: 340;
 
-  --background: hsl(var(--hue), 10%, 97%); /* body */
+  --background: hsl(var(--hue), 10%, 95%); /* body */
   --foreground: hsl(var(--hue), 10%, 10%); /* main text */
 
   --inversed-background: hsl(var(--hue), 10%, 10%); /* main text */
@@ -48,9 +48,9 @@
 
   --popover: hsl(var(--hue), 10%, 100%); /* dropdown menu */
   --popover-foreground: hsl(var(--hue), 10%, 45%);
-  --popover-focus: hsl(var(--hue), 10%, 97%);
+  --popover-focus: hsl(var(--hue), 10%, 95%);
 
-  --error: hsl(var(--error-hue), 85%, 55%);
+  --error: hsl(var(--error-hue), 85%, 50%);
 
   --topbar: hsla(var(--hue), 10%, 100%);
   --title: hsl(var(--brand-primary-hue), 85%, 40%);
@@ -63,7 +63,7 @@
 }
 
 .dark {
-  --background: hsl(var(--hue), 20%, 10%);
+  --background: hsl(var(--hue), 20%, 5%);
   --foreground: hsl(var(--hue), 20%, 95%);
 
   --inversed-background: hsl(var(--hue), 20%, 95%);
@@ -90,17 +90,17 @@
   --btn-accent-foreground-hover: hsl(0, 0%, 0%);
   --btn-accent-background-hover: hsl(var(--brand-primary-hue), 85%, 45%);
 
-  --input: hsl(var(--hue), 20%, 12%);
+  --input: hsl(var(--hue), 25%, 15%);
   --input-border: hsl(var(--hue), 20%, 20%);
-  --input-autofill: hsl(var(--hue), 20%, 20%);
+  --input-autofill: hsl(var(--hue), 25%, 20%);
 
-  --card: hsl(var(--hue), 20%, 15%);
+  --card: hsl(var(--hue), 25%, 10%);
 
   --popover: hsl(var(--hue), 20%, 15%);
   --popover-foreground: hsl(var(--hue), 20%, 85%);
-  --popover-focus: hsl(var(--hue), 20%, 12%);
+  --popover-focus: hsl(var(--hue), 20%, 15%);
 
-  --error: hsl(var(--error-hue), 100%, 65%);
+  --error: hsl(var(--error-hue), 85%, 60%);
 
   --topbar: hsl(var(--hue), 20%, 20%);
   --title: hsl(var(--brand-primary-hue), 85%, 60%);

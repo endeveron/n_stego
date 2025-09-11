@@ -46,7 +46,7 @@ export default function ImageUploader({ onChange }: ImageUploaderProps) {
     <>
       <FormControl>
         <div
-          className="relative min-h-24 border-2 border-dashed border-border p-4 rounded-md text-center cursor-pointer hover:bg-popover-focus trans-c"
+          className="relative min-h-24 border-2 border-dashed border-border p-4 rounded-md text-center cursor-pointer bg-input trans-c"
           onClick={() => inputRef.current?.click()}
           onDragOver={(e) => e.preventDefault()}
           onDrop={handleDrop}
