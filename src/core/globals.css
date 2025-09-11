@@ -6,7 +6,7 @@
 :root {
   --radius: 0.5rem;
 
-  --hue: 225;
+  --hue: 214;
   --accent-hue: 175;
   --brand-primary-hue: 175;
   --brand-secondary-hue: 195;
@@ -25,22 +25,22 @@
   --brand-secondary: hsl(var(--brand-secondary-hue), 74%, 55%);
   --brand-foreground: hsl(0, 0%, 100%);
 
-  --btn-foreground: hsl(var(--hue), 10%, 85%);
-  --btn-background: hsl(var(--hue), 10%, 15%);
-  --btn-foreground-hover: hsl(var(--hue), 10%, 100%);
-  --btn-background-hover: hsl(var(--brand-secondary-hue), 65%, 50%);
+  --btn-foreground: hsl(var(--hue), 10%, 100%);
+  --btn-background: hsl(var(--brand-primary-hue), 85%, 40%);
+  --btn-foreground-hover: hsl(0, 0%, 0%);
+  --btn-background-hover: hsl(var(--brand-primary-hue), 85%, 55%);
 
   --btn-secondary-foreground: hsl(var(--hue), 10%, 50%);
   --btn-secondary-background: hsl(var(--hue), 10%, 95%);
-  --btn-secondary-foreground-hover: hsl(var(--hue), 10%, 100%);
-  --btn-secondary-background-hover: hsl(var(--brand-secondary-hue), 65%, 50%);
+  --btn-secondary-foreground-hover: hsl(0, 0%, 0%);
+  --btn-secondary-background-hover: hsl(var(--brand-primary-hue), 85%, 55%);
 
   --btn-accent-foreground: hsl(var(--hue), 10%, 100%);
   --btn-accent-background: hsl(var(--brand-primary-hue), 85%, 40%);
   --btn-accent-foreground-hover: hsl(0, 0%, 0%);
   --btn-accent-background-hover: hsl(var(--brand-primary-hue), 85%, 55%);
 
-  --input: hsl(var(--hue), 10%, 100%);
+  --input: hsl(var(--hue), 10%, 97%);
   --input-border: hsl(var(--hue), 10%, 92%);
   --input-autofill: hsl(var(--hue), 10%, 97%);
 
@@ -63,11 +63,11 @@
 }
 
 .dark {
-  --background: hsl(var(--hue), 10%, 10%);
-  --foreground: hsl(var(--hue), 10%, 95%);
+  --background: hsl(var(--hue), 20%, 10%);
+  --foreground: hsl(var(--hue), 20%, 95%);
 
-  --inversed-background: hsl(var(--hue), 10%, 95%);
-  --inversed-foreground: hsl(var(--hue), 10%, 5%);
+  --inversed-background: hsl(var(--hue), 20%, 95%);
+  --inversed-foreground: hsl(var(--hue), 20%, 5%);
 
   --accent: hsl(var(--accent-hue), 83%, 47%);
 
@@ -75,41 +75,41 @@
   --brand-secondary: hsl(var(--brand-secondary-hue), 76%, 37%);
   --brand-foreground: hsl(0, 0%, 100%);
 
-  --btn-foreground: hsl(var(--hue), 10%, 0%);
-  --btn-background: hsl(var(--hue), 10%, 90%);
-  --btn-foreground-hover: hsl(var(--hue), 10%, 100%);
-  --btn-background-hover: hsl(var(--brand-secondary-hue), 65%, 45%);
+  --btn-foreground: hsl(var(--hue), 20%, 100%);
+  --btn-background: hsl(var(--brand-primary-hue), 85%, 30%);
+  --btn-foreground-hover: hsl(0, 0%, 0%);
+  --btn-background-hover: hsl(var(--brand-primary-hue), 85%, 45%);
 
-  --btn-secondary-foreground: hsl(var(--hue), 10%, 60%);
-  --btn-secondary-background: hsl(var(--hue), 10%, 15%);
+  --btn-secondary-foreground: hsl(var(--hue), 20%, 60%);
+  --btn-secondary-background: hsl(var(--hue), 20%, 10%);
   --btn-secondary-foreground-hover: hsl(0, 0%, 0%);
   --btn-secondary-background-hover: hsl(var(--brand-primary-hue), 85%, 45%);
 
-  --btn-accent-foreground: hsl(var(--hue), 10%, 100%);
-  --btn-accent-background: hsl(var(--brand-primary-hue), 100%, 25%);
+  --btn-accent-foreground: hsl(var(--hue), 20%, 100%);
+  --btn-accent-background: hsl(var(--brand-primary-hue), 85%, 30%);
   --btn-accent-foreground-hover: hsl(0, 0%, 0%);
   --btn-accent-background-hover: hsl(var(--brand-primary-hue), 85%, 45%);
 
-  --input: hsl(var(--hue), 10%, 15%);
-  --input-border: hsl(var(--hue), 10%, 20%);
-  --input-autofill: hsl(var(--hue), 10%, 20%);
+  --input: hsl(var(--hue), 20%, 12%);
+  --input-border: hsl(var(--hue), 20%, 20%);
+  --input-autofill: hsl(var(--hue), 20%, 20%);
 
-  --card: hsl(var(--hue), 10%, 12%);
+  --card: hsl(var(--hue), 20%, 15%);
 
-  --popover: hsl(var(--hue), 10%, 15%);
-  --popover-foreground: hsl(var(--hue), 10%, 85%);
-  --popover-focus: hsl(var(--hue), 10%, 15%);
+  --popover: hsl(var(--hue), 20%, 15%);
+  --popover-foreground: hsl(var(--hue), 20%, 85%);
+  --popover-focus: hsl(var(--hue), 20%, 12%);
 
   --error: hsl(var(--error-hue), 100%, 65%);
 
-  --topbar: hsl(var(--hue), 10%, 20%);
+  --topbar: hsl(var(--hue), 20%, 20%);
   --title: hsl(var(--brand-primary-hue), 85%, 60%);
-  --area: hsl(var(--hue), 10%, 5%);
-  --muted: hsl(var(--hue), 10%, 55%);
-  --border: hsl(var(--hue), 10%, 20%);
-  --icon: hsl(var(--hue), 10%, 75%);
-  --ring: hsl(var(--hue), 10%, 45%);
-  --scroll: hsl(var(--hue), 10%, 25%);
+  --area: hsl(var(--hue), 20%, 5%);
+  --muted: hsl(var(--hue), 15%, 55%);
+  --border: hsl(var(--hue), 20%, 20%);
+  --icon: hsl(var(--hue), 20%, 75%);
+  --ring: hsl(var(--hue), 20%, 45%);
+  --scroll: hsl(var(--hue), 20%, 25%);
 }
 
 @theme inline {
