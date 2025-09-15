@@ -32,18 +32,18 @@ export const metadata: Metadata = {
     locale: 'en_US',
     images: [
       {
-        url: `${BASE_URL}/images/open-graph/og-image.png`,
+        url: `${BASE_URL}/images/open-graph/og-image.jpg`,
         width: 1200,
         height: 630,
         alt: `OG Image`,
-        type: 'image/png',
+        type: 'image/jpg',
       },
       {
-        url: `${BASE_URL}/images/open-graph/og-image-square.png`,
+        url: `${BASE_URL}/images/open-graph/og-image-square.jpg`,
         width: 1200,
         height: 1200,
         alt: `OG Image`,
-        type: 'image/png',
+        type: 'image/jpg',
       },
     ],
   },
