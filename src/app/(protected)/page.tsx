@@ -21,8 +21,8 @@ export default async function MainPage() {
           <h1 className="font-black text-title dark:text-title/70 trans-c">
             {APP_NAME}
           </h1>
-          <p className="ml-2 lg:ml-7 relative z-20 mt-0 text-xs text-muted leading-3 bg-background lg:mt-1 lg:text-sm trans-c">
-            Embed in image
+          <p className="relative z-20 mt-0 text-xs text-muted leading-3 bg-background lg:mt-1 lg:text-sm trans-c">
+            Safe embed in image
           </p>
         </div>
       </div>

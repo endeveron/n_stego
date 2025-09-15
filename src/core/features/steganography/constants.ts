@@ -4,7 +4,7 @@ export const INPUT_IMAGE_MAX_SIZE = 10 * 1024 * 1024; // 10MB
 
 export const INPUT_TEXT_MAX_LENGTH = 2000; // 2000 characters ~2–8 KB
 
-export const OUTPUT_IMAGE_FILENAME = 'image';
+export const OUTPUT_IMAGE_FILENAME = 'stego';
 
 export const ZIP_SIGNATURE = 'STEG_V1'; // Version signature for embedded data
 

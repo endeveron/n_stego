@@ -30,7 +30,7 @@ export const embedTextSchema = z.object({
     )
     .trim()
     .regex(
-      /^[a-zA-Z0-9\s.,!?'"():;\-_]+$/,
+      /^[a-zA-Z0-9\s.,!?'"@():;\-_]+$/,
       'Only letters, numbers, and basic punctuation are allowed'
     ),
   imageFile,
