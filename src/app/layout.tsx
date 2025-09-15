@@ -24,9 +24,9 @@ export const metadata: Metadata = {
   creator: 'Endeveron',
   metadataBase: new URL(BASE_URL),
   openGraph: {
-    title: 'Chat AI',
-    description: `Chat AI - Beautiful AI companion`,
-    siteName: 'Chat AI',
+    title: `${APP_NAME} – Safe Embed in Image`,
+    description: `A secure steganography web app that lets you hide encrypted messages inside images without altering their visible appearance.`,
+    siteName: APP_NAME,
     type: 'website',
     url: '/',
     locale: 'en_US',
