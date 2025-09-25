@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { FormControl, FormInput, FormMessage } from '@/core/components/ui/Form';
+import { cn } from '@/core/utils';
 
 type ImageUploaderProps = {
   onChange: (file: File) => void;
@@ -12,10 +13,36 @@ type ImageUploaderProps = {
 export default function ImageUploader({ onChange }: ImageUploaderProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [previewFile, setPreviewFile] = useState<File | null>(null);
+  const [dragCounter, setDragCounter] = useState<number>(0);
+
+  // Derived state for easier use in rendering
+  const isDragOver = dragCounter > 0;
+
+  // Drag event handlers
+  const handleDragEnter = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragCounter((prev) => prev + 1);
+  }, []);
+
+  const handleDragLeave = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragCounter((prev) => Math.max(0, prev - 1));
+  }, []);
+
+  const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+  }, []);
 
   const handleDrop = useCallback(
     (e: React.DragEvent<HTMLDivElement>) => {
       e.preventDefault();
+      e.stopPropagation();
+
+      setDragCounter(0);
+
       const files = e.dataTransfer.files;
       if (files && files.length > 0) {
         const imgFile = files[0];
@@ -46,9 +73,15 @@ export default function ImageUploader({ onChange }: ImageUploaderProps) {
     <>
       <FormControl>
         <div
-          className="relative min-h-24 border-2 border-dashed border-border p-4 rounded-md text-center cursor-pointer bg-input trans-c"
+          data-drag-over={isDragOver}
+          className={cn(
+            'relative min-h-24 border-2 border-dashed p-4 rounded-md text-center cursor-pointer trans-c',
+            isDragOver ? 'border-accent bg-accent/10' : 'border-border bg-input'
+          )}
           onClick={() => inputRef.current?.click()}
-          onDragOver={(e) => e.preventDefault()}
+          onDragEnter={handleDragEnter}
+          onDragLeave={handleDragLeave}
+          onDragOver={handleDragOver}
           onDrop={handleDrop}
         >
           {!previewFile && (
