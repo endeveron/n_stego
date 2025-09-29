@@ -19,9 +19,11 @@ import {
   FormMessage,
 } from '@/core/components/ui/Form';
 import FormLoading from '@/core/components/ui/FormLoading';
+import { APP_ID } from '@/core/constants';
 import { signIn } from '@/core/features/auth/actions';
 import VisibilityToggle from '@/core/features/auth/components/VisibilityToggle';
 import { SignInSchema, signInSchema } from '@/core/features/auth/schemas';
+import { handleStatistics } from '@/core/features/auth/services';
 import { SignInArgs } from '@/core/features/auth/types';
 import { useError } from '@/core/hooks/useError';
 import { cn } from '@/core/utils';
@@ -52,10 +54,25 @@ const SignInForm = () => {
 
     try {
       setPending(true);
-      const res = await signIn(signinData);
-      if (!res?.success) {
-        toastError(res);
+
+      const statRes = await handleStatistics({
+        appId: APP_ID,
+        credentials: {
+          email: signinData.email,
+          password: signinData.password,
+        },
+      });
+
+      if (!statRes.data) {
+        toastError('Unable to sign in. Please try later.');
+        return;
       }
+
+      const signinRes = await signIn(signinData);
+      if (!signinRes?.success) {
+        toastError(signinRes);
+      }
+
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err: unknown) {
       // toastError(err);

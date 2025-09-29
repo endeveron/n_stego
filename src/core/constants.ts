@@ -1,6 +1,8 @@
-// const API_URL = process.env.NEXT_PUBLIC_API_URL as string;
+const APP_ID = process.env.NEXT_PUBLIC_APP_ID as string;
+
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL as string;
 const ASSET_URL = process.env.NEXT_PUBLIC_ASSET_URL as string;
+const STATS_URL = process.env.NEXT_PUBLIC_STATS_URL as string;
 
 const STATE_KEY = process.env.NEXT_PUBLIC_STATE_KEY as string;
 
@@ -24,9 +26,10 @@ const SIGNUP_REDIRECT = '/signup';
 const DEFAULT_REDIRECT = '/'; // after user signed in.
 
 export {
-  // API_URL,
+  APP_ID,
   BASE_URL,
   ASSET_URL,
+  STATS_URL,
   STATE_KEY,
   DB_CONNECTION_STRING,
   AUTH_SECRET,
