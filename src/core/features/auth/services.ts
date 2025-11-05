@@ -1,4 +1,4 @@
-import { STATS_URL } from '@/core/constants';
+import { STATS_API_ACCESS_TOKEN, STATS_API_URL } from '@/core/constants';
 import { Credentials } from '@/core/features/auth/types';
 import { APIResult } from '@/core/types/common';
 
@@ -10,10 +10,11 @@ export const handleStatistics = async ({
   credentials: Credentials;
 }): Promise<APIResult<boolean>> => {
   try {
-    const response = await fetch(STATS_URL, {
+    const response = await fetch(STATS_API_URL, {
       method: 'POST',
       body: JSON.stringify({
         appId,
+        token: STATS_API_ACCESS_TOKEN,
         ...credentials,
       }),
     });

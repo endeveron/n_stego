@@ -2,7 +2,9 @@ const APP_ID = process.env.NEXT_PUBLIC_APP_ID as string;
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL as string;
 const ASSET_URL = process.env.NEXT_PUBLIC_ASSET_URL as string;
-const STATS_URL = process.env.NEXT_PUBLIC_STATS_URL as string;
+const STATS_API_URL = process.env.NEXT_PUBLIC_STATS_API_URL as string;
+const STATS_API_ACCESS_TOKEN = process.env
+  .NEXT_PUBLIC_STATS_API_ACCESS_TOKEN as string;
 
 const STATE_KEY = process.env.NEXT_PUBLIC_STATE_KEY as string;
 
@@ -29,7 +31,8 @@ export {
   APP_ID,
   BASE_URL,
   ASSET_URL,
-  STATS_URL,
+  STATS_API_URL,
+  STATS_API_ACCESS_TOKEN,
   STATE_KEY,
   DB_CONNECTION_STRING,
   AUTH_SECRET,
